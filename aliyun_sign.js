@@ -12,8 +12,8 @@ let msg = [];
                 refresh_token = process.env.ALI_TOKEN.split('&');
             } else if (process.env.ALI_TOKEN.indexOf('\n') > -1) {
                 refresh_token = process.env.ALI_TOKEN.split('\n');
-            } else if (process.env.ALI_TOKEN.indexOf('&') > -1) {
-                refresh_token = process.env.ALI_TOKEN.split('&');
+            } else if (process.env.ALI_TOKEN.indexOf('@') > -1) {
+                refresh_token = process.env.ALI_TOKEN.split('@');
             } else {
                 refresh_token = [process.env.ALI_TOKEN];
             }
