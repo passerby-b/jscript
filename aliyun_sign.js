@@ -35,7 +35,6 @@ let msg = [];
     $.done();
 });
 
-var token = "";
 async function main(tk) {
     try {
         const url = `https://auth.aliyundrive.com/v2/account/token`;
@@ -67,9 +66,9 @@ async function main(tk) {
         }
         else {
             console.log(data.nick_name);
-            token = data.access_token;
+            let token = data.access_token;
             msg.push(data.nick_name);
-            await sign();
+            await sign(token);
         }
 
     } catch (error) {
@@ -77,7 +76,7 @@ async function main(tk) {
     }
 }
 
-async function sign() {
+async function sign(token) {
     try {
         const url = `https://member.aliyundrive.com/v1/activity/sign_in_list`;
         const method = `POST`;
@@ -106,7 +105,7 @@ async function sign() {
         if (data.success) {
             console.log(`已连续签到${data.result.signInCount}天!`);
             msg.push(`已连续签到${data.result.signInCount}天!`);
-            await sign_in_reward(data.result.signInCount);
+            await sign_in_reward(token, data.result.signInCount);
         }
         else {
             console.log(`签到失败,${data.message}!`);
@@ -118,7 +117,7 @@ async function sign() {
     }
 }
 
-async function sign_in_reward(day) {
+async function sign_in_reward(token, day) {
     try {
         const url = `https://member.aliyundrive.com/v1/activity/sign_in_reward`;
         const method = `POST`;
