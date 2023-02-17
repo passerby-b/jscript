@@ -2,7 +2,7 @@
 //https://alist.nn.ci/zh/guide/drivers/aliyundrive.html 打开页面扫码获取refresh_token
 
 const $ = API();
-const refresh_token = [];
+let refresh_token = [];
 let msg = [];
 !(async () => {
 
