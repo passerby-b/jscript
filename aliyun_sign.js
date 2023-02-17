@@ -28,6 +28,7 @@ let msg = [];
     for (const tk of refresh_token) {
         msg = [];
         await main(tk);
+        await $.wait(1000);
     }
 
 })().catch(async (e) => {
