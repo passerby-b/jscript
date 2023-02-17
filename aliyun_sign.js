@@ -147,17 +147,17 @@ async function sign_in_reward(day) {
         let data = JSON.parse(a.body);
         if (data.success) {
             if (data?.result?.name) {
-                console.log(`奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
-                msg.push(`奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
+                console.log(`🎁奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
+                msg.push(`🎁奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
             }
             else {
-                console.log(`奖励:领了个寂寞!`);
-                msg.push(`奖励:领了个寂寞!`);
+                console.log(`🎁奖励:领了个寂寞!`);
+                msg.push(`🎁奖励:领了个寂寞!`);
             }
         }
         else {
-            console.log(`奖励获取失败:${data.message}!`);
-            msg.push(`奖励获取失败:${data.message}!`);
+            console.log(`🎁奖励获取失败:${data.message}!`);
+            msg.push(`🎁奖励获取失败:${data.message}!`);
         }
 
         try {
