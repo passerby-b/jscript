@@ -162,10 +162,10 @@ async function sign_in_reward(token, day) {
         try {
             if ($.env.isNode) {
                 const notify = require('./sendNotify');
-                notify.sendNotify(msg[0], msg[1] + ',' + msg[2]);
+                notify.sendNotify('【阿里云盘】' + msg[0], msg[1] + ',' + msg[2]);
             }
             else {
-                $.notify(msg[0], msg[1] + ',' + msg[2]);
+                $.notify('【阿里云盘】' + msg[0], msg[1] + ',' + msg[2]);
             }
         } catch (error) {
             console.log('通知发送失败', +error);
