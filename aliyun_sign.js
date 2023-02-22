@@ -1,6 +1,6 @@
 //阿里云盘连续签到活动
 //https://alist.nn.ci/zh/guide/drivers/aliyundrive.html 打开页面扫码获取refresh_token
-//环境变量:ALI_TOKEN,多账号用换行或@或&分隔
+//环境变量:ALI_TOKEN,多账号用换行或,或@或&分隔
 
 const $ = API();
 let refresh_token = [];
@@ -9,7 +9,9 @@ let msg = '';
 
     if ($.env.isNode) {
         if (process.env.ALI_TOKEN) {
-            if (process.env.ALI_TOKEN.indexOf('&') > -1) {
+            if (process.env.ALI_TOKEN.indexOf(',') > -1) {
+                refresh_token = process.env.ALI_TOKEN.split(',');
+            } else if (process.env.ALI_TOKEN.indexOf('&') > -1) {
                 refresh_token = process.env.ALI_TOKEN.split('&');
             } else if (process.env.ALI_TOKEN.indexOf('\n') > -1) {
                 refresh_token = process.env.ALI_TOKEN.split('\n');
@@ -25,10 +27,10 @@ let msg = '';
         console.log('先填写refresh_token!');
         return;
     }
-    for (const tk of refresh_token) {
-        await main(tk);
+    for (let i = 0; i < refresh_token.length; i++) {
+        await main(refresh_token[i]);
         await $.wait(1000);
-        msg += '\n\n';
+        if (i < refresh_token.length - 1) msg += '\n\n';
     }
 
     try {
@@ -114,7 +116,7 @@ async function sign(token) {
             headers: headers,
             body: body
         };
-        let a = await $.http.post(myRequest);
+        let a = await $.http.post(myRequest);//console.log(a.body);
         let data = JSON.parse(a.body);
         if (data.success) {
             console.log(`已连续签到${data.result.signInCount}天!`);
