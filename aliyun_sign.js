@@ -4,7 +4,7 @@
 
 const $ = API();
 let refresh_token = [];
-let msg = [];
+let msg = '';
 !(async () => {
 
     if ($.env.isNode) {
@@ -26,9 +26,21 @@ let msg = [];
         return;
     }
     for (const tk of refresh_token) {
-        msg = [];
         await main(tk);
         await $.wait(1000);
+        msg += '\n\n';
+    }
+
+    try {
+        if ($.env.isNode) {
+            const notify = require('./sendNotify');
+            notify.sendNotify('【阿里云盘】', msg);
+        }
+        else {
+            $.notify('【阿里云盘】', msg);
+        }
+    } catch (error) {
+        console.log('通知发送失败', error);
     }
 
 })().catch(async (e) => {
@@ -64,12 +76,12 @@ async function main(tk) {
         if (data.code == 'InvalidParameter.RefreshToken') {
             //{"code":"InvalidParameter.RefreshToken","message":"The input parameter refresh_token is not valid. ","requestId":null}
             console.log(`token刷新失败,${data.message}`);
-            msg.push(`token刷新失败,${data.message}`);
+            msg += `token刷新失败,${data.message}`;
         }
         else {
             console.log(data.nick_name);
             let token = data.access_token;
-            msg.push(data.nick_name);
+            msg += `【${data.nick_name}】`;
             await sign(token);
         }
 
@@ -106,12 +118,12 @@ async function sign(token) {
         let data = JSON.parse(a.body);
         if (data.success) {
             console.log(`已连续签到${data.result.signInCount}天!`);
-            msg.push(`已连续签到${data.result.signInCount}天!`);
+            msg += `已连续签到${data.result.signInCount}天!`
             await sign_in_reward(token, data.result.signInCount);
         }
         else {
             console.log(`签到失败,${data.message}!`);
-            msg.push(`签到失败,${data.message}!`);
+            msg += `签到失败,${data.message}!`;
         }
 
     } catch (error) {
@@ -149,28 +161,16 @@ async function sign_in_reward(token, day) {
         if (data.success) {
             if (data?.result?.name) {
                 console.log(`🎁奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
-                msg.push(`🎁奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`);
+                msg += `🎁奖励:${data?.result?.name},${data?.result?.description},${data?.result?.notice}!`;
             }
             else {
                 console.log(`🎁奖励:领了个寂寞!`);
-                msg.push(`🎁奖励:领了个寂寞!`);
+                msg += `🎁奖励:领了个寂寞!`;
             }
         }
         else {
             console.log(`🎁奖励获取失败:${data.message}!`);
-            msg.push(`🎁奖励获取失败:${data.message}!`);
-        }
-
-        try {
-            if ($.env.isNode) {
-                const notify = require('./sendNotify');
-                notify.sendNotify('【阿里云盘】' + msg[0], msg[1] + ',' + msg[2]);
-            }
-            else {
-                $.notify('【阿里云盘】' + msg[0], msg[1] + ',' + msg[2]);
-            }
-        } catch (error) {
-            console.log('通知发送失败', +error);
+            msg += `🎁奖励获取失败:${data.message}!`;
         }
 
     } catch (error) {
