@@ -75,11 +75,11 @@ async function main(tk) {
         let data = JSON.parse(a.body);
         if (data.code == 'InvalidParameter.RefreshToken') {
             //{"code":"InvalidParameter.RefreshToken","message":"The input parameter refresh_token is not valid. ","requestId":null}
-            console.log(`token刷新失败,${data.message}`);
-            msg += `token刷新失败,${data.message}`;
+            console.log(`【❌】token刷新失败,${data.message}`);
+            msg += `【❌】token刷新失败,${data.message}`;
         }
         else {
-            console.log(data.nick_name);
+            console.log(`【${data.nick_name}】`);
             let token = data.access_token;
             msg += `【${data.nick_name}】`;
             await sign(token);
