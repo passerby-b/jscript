@@ -53,7 +53,7 @@ let msg = '';
 
 async function main(tk) {
     try {
-        const url = `https://auth.aliyundrive.com/v2/account/token`;
+        const url = `https://auth.alipan.com/v2/account/token`;
         const method = `POST`;
         const headers = {
             'Connection': `keep-alive`,
