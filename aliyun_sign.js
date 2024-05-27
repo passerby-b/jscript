@@ -121,7 +121,7 @@ async function sign(token) {
         if (data.success) {
             console.log(`已连续签到${data.result.signInCount}天!`);
             msg += `已连续签到${data.result.signInCount}天!`
-            await sign_in_reward(token, data.result.signInCount);
+            //await sign_in_reward(token, data.result.signInCount);
         }
         else {
             console.log(`签到失败,${data.message}!`);
